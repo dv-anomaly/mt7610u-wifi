@@ -519,8 +519,8 @@ int write_reg(
 
 	if (ret) {
 		DBGPRINT(RT_DEBUG_ERROR, ("write reg fail\n"));
-		return;
 	}
+	return 0;
 }
 
 int read_reg(
@@ -551,6 +551,7 @@ int read_reg(
 
 	if (ret)
 		*value = 0xffffffff;
+	return 0;
 }
 
 /*

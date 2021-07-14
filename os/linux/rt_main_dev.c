@@ -38,6 +38,11 @@
 #endif
 #endif
 
+#ifdef asm_inline
+#undef asm_inline
+#define asm_inline asm
+#endif
+
 // TODO: shiang-6590, remove it when MP
 // TODO: End---
 

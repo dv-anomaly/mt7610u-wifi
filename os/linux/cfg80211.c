@@ -453,7 +453,7 @@ static int CFG80211_OpsScan(
 	if (RTMP_TEST_FLAG(((PRTMP_ADAPTER)pAd), fRTMP_ADAPTER_HALT_IN_PROGRESS | fRTMP_ADAPTER_NIC_NOT_EXIST))
 	{
 		CFG80211DBG(RT_DEBUG_ERROR, ("80211> %s adapter halting. exiting. \n", __FUNCTION__));
-		return;
+		return 0;
 	}
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,6,0))
@@ -732,7 +732,7 @@ static int CFG80211_OpsStaGet(
 	if (RTMP_TEST_FLAG(((PRTMP_ADAPTER)pAd), fRTMP_ADAPTER_HALT_IN_PROGRESS | fRTMP_ADAPTER_NIC_NOT_EXIST))
 	{
 		CFG80211DBG(RT_DEBUG_ERROR, ("80211> %s adapter halting. exiting. \n", __FUNCTION__));
-		return;
+		return 0;
 	}
 
 	/* init */
@@ -1961,7 +1961,7 @@ struct cfg80211_ops CFG80211_Ops = {
 	.set_cqm_rssi_config		= NULL,
 #endif /* LINUX_VERSION_CODE */
 
-#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37))
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37) && LINUX_VERSION_CODE <= KERNEL_VERSION(5,0,0))
 	/* notify driver that a management frame type was registered */
 	.mgmt_frame_register		= NULL,
 #endif /* LINUX_VERSION_CODE */

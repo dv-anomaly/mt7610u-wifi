@@ -1129,10 +1129,14 @@ static inline void __RtmpOSFSInfoChange(OS_FS_INFO * pOSFSInfo, BOOLEAN bSet)
 		pOSFSInfo->fsuid = current_fsuid();
 		pOSFSInfo->fsgid = current_fsgid(); 
 #endif
-		pOSFSInfo->fs = get_fs();
-		set_fs(KERNEL_DS);
+		#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 10, 0))
+			pOSFSInfo->fs = get_fs();
+			set_fs(KERNEL_DS);
+    	#endif
 	} else {
-		set_fs(pOSFSInfo->fs);
+		#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 10, 0))
+			set_fs(pOSFSInfo->fs);
+    	#endif
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,29)
 		current->fsuid = pOSFSInfo->fsuid;
 		current->fsgid = pOSFSInfo->fsgid;
@@ -1947,8 +1951,10 @@ VOID RtmpDrvAllMacPrint(
 	if (!msg)
 		return;
 	
-	orig_fs = get_fs();
-	set_fs(KERNEL_DS);
+	#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 10, 0))
+		orig_fs = get_fs();
+		set_fs(KERNEL_DS);
+	#endif
 
 	/* open file */
 	file_w = filp_open(fileName, O_WRONLY | O_CREAT, 0);
@@ -1974,7 +1980,9 @@ VOID RtmpDrvAllMacPrint(
 		sprintf(msg, "\nDump all MAC values to %s\n", fileName);
 		filp_close(file_w, NULL);
 	}
-	set_fs(orig_fs);
+	#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 10, 0))
+		set_fs(orig_fs);
+	#endif
 	os_free_mem(NULL, msg);
 }
 
@@ -1996,8 +2004,10 @@ VOID RtmpDrvAllE2PPrint(
 	if (!msg)
 		return;
 	
-	orig_fs = get_fs();
-	set_fs(KERNEL_DS);
+	#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 10, 0))
+		orig_fs = get_fs();
+		set_fs(KERNEL_DS);
+	#endif
 	
 	/* open file */
 	file_w = filp_open(fileName, O_WRONLY | O_CREAT, 0);
@@ -2024,7 +2034,9 @@ VOID RtmpDrvAllE2PPrint(
 			fileName);
 		filp_close(file_w, NULL);
 	}
-	set_fs(orig_fs);
+	#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 10, 0))
+		set_fs(orig_fs);
+	#endif
 	os_free_mem(NULL, msg);
 }
 
@@ -2038,8 +2050,10 @@ VOID RtmpDrvAllRFPrint(
 	PSTRING fileName = "RFDump.txt";
 	mm_segment_t orig_fs;
 	
-	orig_fs = get_fs();
-	set_fs(KERNEL_DS);
+	#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 10, 0))
+		orig_fs = get_fs();
+		set_fs(KERNEL_DS);
+	#endif
 
 	/* open file */
 	file_w = filp_open(fileName, O_WRONLY | O_CREAT, 0);
@@ -2053,7 +2067,11 @@ VOID RtmpDrvAllRFPrint(
 		RtmpOSFileWrite(file_w, (char*)pBuf, BufLen);
 		filp_close(file_w, NULL);
 	}
-	set_fs(orig_fs);
+
+	#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 10, 0))
+		set_fs(orig_fs);
+	#endif
+	
 }
 
 /*
